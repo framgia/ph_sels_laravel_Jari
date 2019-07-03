@@ -8,7 +8,7 @@
     <h1>Create a new category</h1>
 
 
-    <form method="POST" action="/category">
+    <form method="POST" action="/category/store">
 
         {{ csrf_field() }}
         <div class ="field">

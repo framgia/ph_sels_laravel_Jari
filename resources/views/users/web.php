@@ -37,14 +37,14 @@ Route::prefix('category')->group(function () {
 
     Route::get('create', 'CategoryController@create');
 
-    Route::post('store', 'CategoryController@store');
+    Route::post('', 'CategoryController@store');
 });
 
 Route::prefix('user')->group(function () {
 
-    Route::get('displayList', 'UserController@displayList');
+    Route::get('displayUsers', 'UserController@displayUsers');
     
-    Route::get('{userId}', 'UserController@displayProfile');
+    Route::get('{user}', 'UserController@displayProfile');
 });
 
 Route::get('/profile/{profileId}/follow', 'UserController@followUser')->name('user.follow');

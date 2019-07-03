@@ -10,11 +10,16 @@
         <div class='col-md-8 col-md-offset-2'>
             <div class='panel panel-default'>
                 <div class='panel-heading'>Dashboard</div>
-                    <?php if(auth()->user()->isAdmin == 1){?>
+                @if(auth()->user()->isAdmin == 1)
                     <div class='panel-body'>
                         <a href="{{url('admin/routes')}}">Admin</a><br>
                         <a href="{{url('category/show')}}">View Categories</a><br>
-                    </div><?php } else echo '<div class="panel-heading">Normal User</div>';?>
+                    </div>
+                @else                
+                    <div class='panel-body'>
+                        <a href="{{url('user/displayList')}}">Users</a><br>
+                    </div>
+                @endif
                 </div>
             </div>
         </div>
