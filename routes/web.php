@@ -29,10 +29,12 @@ Route::patch('/tasks/{task}', 'ProjectTasksController@update');
 
 Route::prefix('category')->group(function () {
 
+    Route::post('quiz/store','UserController@store')->name('quiz.store');
+
     Route::get('show', 'CategoryController@show');
 
     Route::delete('{category}', 'CategoryController@destroy');
-    
+
     Route::patch('{category}', 'CategoryController@edit');
 
     Route::get('create', 'CategoryController@create');
@@ -42,10 +44,14 @@ Route::prefix('category')->group(function () {
 
 Route::prefix('user')->group(function () {
 
+    Route::get('createActivity', 'UserController@createActivity');
+
+    Route::get('quiz/{categoryId}/{lessonId}', 'UserController@showQuiz');
+
     Route::get('lessons', 'UserController@showCategories');
 
     Route::get('displayList', 'UserController@displayList');
-    
+
     Route::get('{userId}', 'UserController@displayProfile');
 });
 

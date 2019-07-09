@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lesson extends Model
 {
     protected $fillable = [
-        'score','category_id','user_id'
+        'category_id','user_id'
     ];
 
     public function actions()

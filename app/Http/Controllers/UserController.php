@@ -27,15 +27,15 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('users.DispUsers',compact('users')); 
+        return view('users.DispUsers',compact('users'));
     }
-    
+
     public function show(User $userId)
     {
         $followers = $userId->followers;
         $followings = $userId->followings;
     }
-    
+
     public function displayProfile(User $userId)
     {
         return view('users.DispProf',compact('userId')); 
@@ -65,15 +65,59 @@ class UserController extends Controller
     public function makeLesson($categoryId)
     {
         $user = auth()->user();
-    
+
         $lesson =Lesson::create([
-            'score' = > 0,
-            'category_id' = > $categoryId,
-            'user_id' = > $user->id,
+            'category_id' => $categoryId,
+            'user_id' => $user->id,
         ]);
-       
+
         $lessonId=$lesson->id;
 
         return redirect()->action('UserController@showQuiz',compact('categoryId','lessonId'));
+    }
+
+    public function showQuiz($categoryId,$lessonId)
+    {
+        $currentUserId = auth()->user()->id;
+
+        $categoryId=(int)$categoryId;
+
+        $questions = Question::where('category_id', $categoryId)->paginate(1);
+        $currentPage = $questions->currentPage();
+
+        return view('users.Quiz',compact('questions','categoryId','lessonId','currentPage'));
+    }
+
+    public function store(Request $request)
+    {
+        $user = auth()->user();
+        $lessonId = (int)$request->get('lessonId');
+        $var1 = Question::where('category_id','=',$request->categoryId)->get();
+        $categoryId= $request->categoryId;
+
+        (new Answer)->createAnswer(([
+            'choice_id' => (int)$request->choices,
+            'question_id' =>(int)$request->get('id'),
+            'lesson_id' => (int)$request->get('lessonId'),
+        ]));
+
+        if((int)$request->get('currentPage')== $var1->count()){
+            return redirect()->action('UserController@createActivity',compact('categoryId','lessonId','lessonId'));
+        }
+        else{
+            return redirect($request->get('nextPage'));
+        }
+    }
+
+    public function createActivity()
+    {
+        $user = auth()->user();
+        Activity::create([
+            'action_id'=> $lessonId,
+            'action_type'=>"App\Lesson",
+            'user_id'=> $user->id
+        ]);
+
+        return redirect()->action('UserController@check',compact('categoryId','lessonId'));
     }
 }
