@@ -10,7 +10,7 @@
 <div class='container'>
     @if(\Session::has('error'))
     <div class='alert alert-danger'>
-        {{\Session::get('error')}}
+        {{ \Session::get('error') }}
     </div>
     @endif
     <div class='row'>
@@ -25,13 +25,13 @@
                         <input type="hidden" id="categoryId" name="categoryId" value="{{$categoryId}}" />
                         <div class="row">
                         <input type="hidden" id="id" name="id" value="{{$question->id}}" />
-                            <h1><div class="column">{{$question->term}}</div></h1>
+                            <h1><div class="column">{{ $question->term }}</div></h1>
                             <br><br>
                             <div class="column">
                                 @foreach($question->getChoices as $choice)
                                     <h4>
                                     <input type="radio" id="{{$choice->id}}" name="choices" value="{{$choice->id}}" required/>
-                                    {{$choice->word}}</h4>
+                                    {{ $choice->word }}</h4>
                                     <br>
                                 @endforeach
                             </div>
