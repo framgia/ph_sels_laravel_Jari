@@ -42,10 +42,14 @@ Route::prefix('category')->group(function () {
 
 Route::prefix('user')->group(function () {
 
+    Route::get('lessons', 'UserController@showCategories');
+
     Route::get('displayList', 'UserController@displayList');
     
     Route::get('{userId}', 'UserController@displayProfile');
 });
+
+Route::get('/makeLesson/{categoryid}', 'UserController@makeLesson');
 
 Route::get('/profile/{profileId}/follow', 'UserController@followUser')->name('user.follow');
 Route::get('/{profileId}/unfollow', 'UserController@unFollowUser')->name('user.unfollow');

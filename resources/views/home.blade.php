@@ -18,6 +18,7 @@
                 @else                
                     <div class='panel-body'>
                         <a href="{{url('user/displayList')}}">Users</a><br>
+                        <a href="{{url('user/lessons')}}">Lessons</a><br>
                     </div>
                 @endif
                 </div>
