@@ -42,9 +42,14 @@ Route::prefix('category')->group(function () {
     Route::post('store', 'CategoryController@store');
 });
 
-Route::prefix('user')->group(function () {
+Route::post('/results/store','ResultsController@storeResults');
 
-    Route::get('createActivity', 'UserController@createActivity');
+Route::prefix('user')->group(function () {
+    Route::get('check/', 'UserController@check')->name('quiz.check');
+
+    Route::get('quiz/{categoryId}/{lessonId}', 'UserController@showQuiz');
+
+    Route::get('lessons', 'UserController@showCategories');
 
     Route::get('quiz/{categoryId}/{lessonId}', 'UserController@showQuiz');
 
