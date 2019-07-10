@@ -141,6 +141,39 @@ class UserController extends Controller
             $choice = Choices::where('id','=',(int)$answer[$k]->choice_id)->first();
             $collection1->push($choice);
         }
+        
         return view('users.check',compact('score','question','answers','choices','collection','collection1','categoryId','lessonId'));
+    }
+
+    public function wordsLearned()
+    {
+        $userId = auth()->user()->id;
+        $name = auth()->user()->name;
+        $answers = User::find($userId)->answer()->get();
+
+        $wordsLearned = 0;
+        $currentUserId = auth()->user()->id;
+        $results= Result::where('user_id','=',$currentUserId)->get();
+        for($i=0;$i<$results->count();$i++){
+            $wordsLearned = $wordsLearned+ $results[$i]->score;
+        }
+
+        $answerCollection = collect();
+        for($i=0;$i<$answers->count();$i++){
+            $answerCollection->push($answers[$i]->choice_id);
+        }
+
+        $correctAnswers = collect();
+        $questionCollection = collect();
+        $answerCount=$answerCollection->count();
+
+        for($j=0;$j<$answerCount;$j++){
+            $choice = Choices::find($answerCollection[$j]);
+            if($choice->isCorrect==1){
+                $correctAnswers->push($choice->word);
+                $questionCollection->push($choice->question);
+            }
+        }
+        return view('users.DispWords',compact('name','correctAnswers','questionCollection','wordsLearned'));
     }
 }
