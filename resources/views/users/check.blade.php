@@ -14,15 +14,20 @@
     </div>
     @endif
     <div class="container">
-        <h2>Results Page</h2>
+        <div class='row'>
+            <div class="col">
+                <h2>{{ $title }}</h2>
+            </div>
+            <div class="col"><h2>Result: {{ $score }} of {{ $question->count() }} </h2></div>
+        </div>
         <form method="POST" action= "/results/store">
             @csrf
             <input type="hidden" id="lessonId" name="lessonId" value={{$lessonId}} />
             <input type="hidden" id="categoryId" name="categoryId" value={{$categoryId}} />
-            <button type="submit">HOME</button>
+            <button type="submit" class="btn btn-primary">SUBMIT EXAM</button>
             <input type="hidden" id="score" name="score" value={{$score}} />
             <input type="hidden" id="questionCount" name="questionCount" value={{$question->count()}} />
-            <div>Your score is {{$score}} out of {{$question->count()}}: </div>
+            
             <div class="row">
                 <div class='col-md-4 col-md-offset-4'>
                     <input type="hidden" id="collection" name="collection" value={{$question}} />

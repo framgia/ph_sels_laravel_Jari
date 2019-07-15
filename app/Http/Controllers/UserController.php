@@ -44,6 +44,7 @@ class UserController extends Controller
 
     public function userProfile()
     {
+        $flag= null;
         $allActivities = collect();
  
         $user = Auth()->user();
@@ -65,7 +66,7 @@ class UserController extends Controller
             $wordsLearned = $wordsLearned+ $results[$i]->score;
         }
         
-        return view('users.Profile',compact('user','name','wordsLearned','allActivities')); 
+        return view('users.Profile',compact('user','name','flag','wordsLearned','allActivities')); 
     
     }
 
@@ -140,6 +141,8 @@ class UserController extends Controller
         $lessonId = (int)$request->get('lessonId');
         $categoryId = (int)$request->get('categoryId');
 
+        $title = Category::find($categoryId )->title;
+
         $score=0;
         $userId = auth()->user()->id;
         $answers = Answer::where('lesson_id','=',$lessonId)->get();
@@ -169,7 +172,7 @@ class UserController extends Controller
             $collection1->push($choice);
         }
         
-        return view('users.check',compact('score','question','answers','choices','collection','collection1','categoryId','lessonId'));
+        return view('users.check',compact('title','score','question','answers','choices','collection','collection1','categoryId','lessonId'));
     }
 
     public function wordsLearned()
@@ -208,8 +211,6 @@ class UserController extends Controller
     {
         
         $allActivities = collect();
-        // $followingActivities =collect();
-        // $user = Auth()->user();
         $userActivities = $userId->activity;
 
         foreach($userActivities as $userActivity){
@@ -218,9 +219,7 @@ class UserController extends Controller
         }
 
         $user = $userId;
- 
-        // $user = auth()->user()->id;
-        
+
         $name = $userId->name;
         $id = auth()->user()->id;
 
@@ -231,6 +230,7 @@ class UserController extends Controller
             $wordsLearned = $wordsLearned+ $results[$i]->score;
         }
         $flag = Follower::where('follower_id','=',$currentUserId)->where('leader_id','=',$userId->id)->first();
-        return view('users.DispProf',compact('user','name','wordsLearned','flag','allActivities')); 
+        
+        return view('users.Profile',compact('user','name','wordsLearned','flag','allActivities')); 
     }
 }
