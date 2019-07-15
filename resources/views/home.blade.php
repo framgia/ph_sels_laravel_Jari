@@ -25,8 +25,8 @@
                                 <a href="{{url('question/addQuestion')}}">Add Question</a><br>
                                 <a href="{{url('question/addChoice')}}">Add Choice</a><br>
                         @else       
-                            <div class='panel-heading'>Learned {{App\Lesson::where('user_id','=',auth()->user()->id)->get()->count()}} lessons</div>        
-                            <div class='panel-heading'>Learned {{$wordsLearned}} words</div>   
+                            <div class='panel-heading'>Learned {{ App\Lesson::where('user_id','=',auth()->user()->id)->get()->count() }} lessons</div>        
+                            <div class='panel-heading'>Learned {{ $wordsLearned }} words</div>   
                             <div class='panel-body'>
                                 <a href="{{url('user/userProfile')}}">Profile</a><br>
                                 <a href="{{url('user/displayList')}}">Users</a><br>
@@ -42,19 +42,18 @@
                                     
                                     @if($activity->action_type=='App\Follower')
                                         <div>
-                                            {{$activity->user->name}}
+                                            <img src="{{asset($activity->user->profile_image) }}" class="rounded-circle" />
+                                            {{ $activity->user->name }}
                                             
-                                            {{$activity->content}}
+                                            {{ $activity->content }}
                                         </div>
-                                        <br>
-                                    
+                                        <br>                                  
                                     @elseif($activity->action_type=='App\Lesson')
                                         <div>
-                                            {{$activity->user->name}}
-                                            
-                                            {{$activity->content}}
+                                            <img src="{{asset($activity->user->profile_image) }}" class="rounded-circle" />
+                                            {{ $activity->user->name }}
+                                            {{ $activity->content }}
                                         </div>
-                                        
                                         <br> 
                                     @endif
                                 @endforeach

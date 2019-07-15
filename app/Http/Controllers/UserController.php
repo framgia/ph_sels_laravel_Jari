@@ -208,8 +208,6 @@ class UserController extends Controller
     {
         
         $allActivities = collect();
-        // $followingActivities =collect();
-        // $user = Auth()->user();
         $userActivities = $userId->activity;
 
         foreach($userActivities as $userActivity){
@@ -218,9 +216,7 @@ class UserController extends Controller
         }
 
         $user = $userId;
- 
-        // $user = auth()->user()->id;
-        
+
         $name = $userId->name;
         $id = auth()->user()->id;
 
