@@ -42,6 +42,33 @@ class UserController extends Controller
         return view('users.DispProf',compact('userId')); 
     }
 
+    public function userProfile()
+    {
+        $allActivities = collect();
+ 
+        $user = Auth()->user();
+        $userActivities = $user->activity;
+
+        foreach($userActivities as $userActivity){
+ 
+            $allActivities->push($userActivity);
+        }
+
+        $name = $user->name;
+        $id = $user->id;
+
+        $wordsLearned = 0;
+        $currentUserId = auth()->user()->id;
+        $results= Result::where('user_id','=',$currentUserId )->get();
+
+        for($i=0;$i<$results->count();$i++){
+            $wordsLearned = $wordsLearned+ $results[$i]->score;
+        }
+        
+        return view('users.Profile',compact('user','name','wordsLearned','allActivities')); 
+    
+    }
+
     public function followUser(User $profileId)
     {
         $currentUser = Auth::user();
@@ -175,5 +202,35 @@ class UserController extends Controller
             }
         }
         return view('users.DispWords',compact('name','correctAnswers','questionCollection','wordsLearned'));
+    }
+
+    public function viewProfile(User $userId)
+    {
+        
+        $allActivities = collect();
+        // $followingActivities =collect();
+        // $user = Auth()->user();
+        $userActivities = $userId->activity;
+
+        foreach($userActivities as $userActivity){
+ 
+            $allActivities->push($userActivity);
+        }
+
+        $user = $userId;
+ 
+        // $user = auth()->user()->id;
+        
+        $name = $userId->name;
+        $id = auth()->user()->id;
+
+        $wordsLearned = 0;
+        $currentUserId = auth()->user()->id;
+        $results= Result::where('user_id','=',$currentUserId )->get();
+        for($i=0;$i<$results->count();$i++){
+            $wordsLearned = $wordsLearned+ $results[$i]->score;
+        }
+        $flag = Follower::where('follower_id','=',$currentUserId)->where('leader_id','=',$userId->id)->first();
+        return view('users.DispProf',compact('user','name','wordsLearned','flag','allActivities')); 
     }
 }
