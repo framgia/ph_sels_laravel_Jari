@@ -27,20 +27,22 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    SELS
+                    Sun * E-Learning system
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                    
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -51,9 +53,33 @@
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
+                            
+                            
                         @else
+                            <li>
+                                <div><a class = "navbar-brand" href="{{url('/home')}}">Home</a></div>
+                            </li>
+                            @if(auth()->user()->isAdmin!=1) 
+                                                    
+                                <li class = "nav-item">
+                                    <div><a class = "navbar-brand" href="{{url('user/lessons')}}">Lessons</a></div>
+                                </li>
+                                <li>
+                                    <div><a  class = "navbar-brand" href="{{url('user/userProfile')}}">Profile</a></div>
+                                </li>
+                                <li>
+                                    <div><a class = "navbar-brand" href="{{url('user/displayList')}}">Users</a></div>
+                                </li>
+
+                                
+                            @endif
                             <li class="nav-item dropdown">
+
+
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    @if (auth()->user()->image)
+                                        <img src="{{ asset(auth()->user()->image) }}" style="width: 40px; height: 40px; border-radius: 50%;">
+                                    @endif
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
@@ -63,7 +89,7 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
+                                    <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>

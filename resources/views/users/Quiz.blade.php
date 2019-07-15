@@ -2,7 +2,6 @@
 @push('scripts')
     <script src="{{ asset('js/disableBack.js')}}"></script>
 @endpush
-
 @push('styles')
     <link href="{{ asset('css/results.css') }}" rel="stylesheet">
 @endpush
@@ -16,7 +15,7 @@
     <div class='row'>
         <div class='col-md-8 col-md-offset-2'>
             <div class='panel panel-default'>
-                <div class='panel-heading'><h2>Question<h2></div>
+                <div class='row'><h2>Question<h2></div>
                     <form method="POST" action="{{route('quiz.store')}}">
                         @csrf   
                         @foreach($questions as $question)
@@ -27,11 +26,12 @@
                         <input type="hidden" id="id" name="id" value="{{$question->id}}" />
                             <h1><div class="column">{{$question->term}}</div></h1>
                             <br><br>
-                            <div class="column">
+                            <div class="col-2 col-md-offset-4">
                                 @foreach($question->getChoices as $choice)
                                     <h4>
                                     <input type="radio" id="{{$choice->id}}" name="choices" value="{{$choice->id}}" required/>
-                                    {{$choice->word}}</h4>
+                                    {{$choice->word}}
+                                    </h4>
                                     <br>
                                 @endforeach
                             </div>
@@ -39,7 +39,7 @@
                         @endforeach
                         <input type="hidden" id="nextPage" name="nextPage" value="{{$questions->nextPageUrl()}}" />
                         <br>
-                        <button type="submit"> NEXT</button>
+                        <button type="submit" class="btn btn-primary"> NEXT</button>
                     </form>
                 </div>
             </div>
