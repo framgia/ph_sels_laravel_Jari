@@ -51,4 +51,24 @@ class User extends Authenticatable
     {
         return $this->id;
     }
+
+    public function answer()
+    {   
+        return $this->hasManyThrough('App\Answer','App\Lesson','user_id', 'lesson_id');
+    }
+
+    public function lesson()
+    {
+        return $this->hasMany('App\Lesson');
+    }
+
+    public function activity()
+    {
+        return $this->hasMany('App\Activity');
+    }
+
+    public function category()
+    {
+        return $this->hasManyThrough('App\Category','App\Lesson','user_id', 'lesson_id');
+    }
 }
