@@ -45,6 +45,12 @@ Route::prefix('category')->group(function () {
 Route::post('/results/store','ResultsController@storeResults');
 
 Route::prefix('user')->group(function () {
+    Route::get('viewProfile/{userId}', 'UserController@viewProfile');
+
+    Route::get('userProfile', 'UserController@userProfile');
+
+    Route::get('wordsLearned', 'UserController@wordsLearned');
+
     Route::get('check/', 'UserController@check')->name('quiz.check');
 
     Route::get('quiz/{categoryId}/{lessonId}', 'UserController@showQuiz');
@@ -52,6 +58,10 @@ Route::prefix('user')->group(function () {
     Route::get('lessons', 'UserController@showCategories');
 
     Route::get('quiz/{categoryId}/{lessonId}', 'UserController@showQuiz');
+
+    Route::get('lessons', 'UserController@showCategories');
+
+    Route::get('lessons', 'UserController@showCategories');
 
     Route::get('lessons', 'UserController@showCategories');
 
