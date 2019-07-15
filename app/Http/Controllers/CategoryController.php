@@ -21,10 +21,10 @@ class CategoryController extends Controller
 
         Category::create($attributes);
         
-        return redirect('/home');
+        return redirect('/category/edit');
     }
 
-    public function show()
+    public function change()
     {
         $categories = Category::all();
 
@@ -38,13 +38,68 @@ class CategoryController extends Controller
         $category->description = request('description');
         
         $category->save();
-        return redirect('/category/show');
+        return redirect('/category/edit');
     }
 
     public function destroy($id)
     {
         Category::find($id)->delete();
         
-        return redirect('/category/show');
+        return redirect('/category/edit');
+    }
+
+    public function addQuestion()
+    {
+
+        return view('category/addQuestion');
+    }
+
+    public function storeQuestion(Request $request)
+    {
+        $title=$request->get('title');
+
+        $category= Category::where('title','=',$title)->first();
+        
+        if($category==null){
+
+            return redirect('/home');
+        }
+        else{
+            $categoryId = $category->id;
+            Question::create([
+                'term'=> $request->get('question'),
+                'category_id'=>  $categoryId,
+            ]);
+        }
+
+        return redirect('/home');
+    }
+
+    public function addChoice()
+    {
+
+        return view('category/addChoice');
+    }
+
+    public function storeChoice(Request $request)
+    {
+        $question=$request->get('question');
+
+        $question= Question::where('term','=',$question)->first();
+
+        if($question==null){
+
+            return redirect('/home');
+        }
+        else{
+            $questionId = $question->id;
+            Choices::create([
+                'word'=> $request->get('choice'),
+                'question_id'=>  $questionId,
+                'isCorrect'=> $request->get('isCorrect'),
+            ]);
+        }
+
+        return redirect('/home');
     }
 }

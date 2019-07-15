@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Activity;
+use App\Lesson;
+use App\Answer;
 
 class User extends Authenticatable
 {
@@ -16,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'isAdmin'
+        'name', 'email', 'password', 'isAdmin','profile_id'
     ];
 
     /**
@@ -53,12 +56,14 @@ class User extends Authenticatable
     }
 
     public function answer()
-    {   
+    {
+        
         return $this->hasManyThrough('App\Answer','App\Lesson','user_id', 'lesson_id');
     }
 
     public function lesson()
     {
+     
         return $this->hasMany('App\Lesson');
     }
 
@@ -69,6 +74,12 @@ class User extends Authenticatable
 
     public function category()
     {
+  
         return $this->hasManyThrough('App\Category','App\Lesson','user_id', 'lesson_id');
+    }
+
+    public function getImageAttribute()
+    {
+        return $this->profile_image;
     }
 }
