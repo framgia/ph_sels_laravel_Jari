@@ -11,7 +11,11 @@
             <div class='panel panel-default'>
                 <div class='panel-heading'>Dashboard</div>
                 @foreach ($users as $user)
-                    <a href="{{ URL::to('/user/' . $user->id) }}"> {{$user->name}}</a><br>
+                    @if($user->isAdmin==0)
+                        @if($user->id!=auth()->user()->id)
+                            <a href="{{ URL::to('/user/viewProfile/' . $user->id) }}"> {{$user->name}}</a><br>
+                        @endif
+                    @endif
                 @endforeach
             </div>
         </div>
