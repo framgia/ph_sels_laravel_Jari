@@ -9,9 +9,13 @@
     <div class='row'>
         <div class='col-md-8 col-md-offset-2'>
             <div class='panel panel-default'>
-                <div class='panel-heading'>Dashboard</div>
+            <div class='panel-heading'><h4>Dashboard</h4></div>
                 @foreach ($users as $user)
-                    <a href="{{ URL::to('/user/' . $user->id) }}"> {{$user->name}}</a><br>
+                    @if($user->isAdmin==0)
+                        @if($user->id!=auth()->user()->id)
+                            <h5><a href="{{ URL::to('/user/viewProfile/' . $user->id) }}"> {{$user->name}}</a></h5><br>
+                        @endif
+                    @endif
                 @endforeach
             </div>
         </div>

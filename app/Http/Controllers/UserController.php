@@ -42,6 +42,34 @@ class UserController extends Controller
         return view('users.DispProf',compact('userId')); 
     }
 
+    public function userProfile()
+    {
+        $flag= null;
+        $allActivities = collect();
+ 
+        $user = Auth()->user();
+        $userActivities = $user->activity;
+
+        foreach($userActivities as $userActivity){
+ 
+            $allActivities->push($userActivity);
+        }
+
+        $name = $user->name;
+        $id = $user->id;
+
+        $wordsLearned = 0;
+        $currentUserId = auth()->user()->id;
+        $results= Result::where('user_id','=',$currentUserId )->get();
+
+        for($i=0;$i<$results->count();$i++){
+            $wordsLearned = $wordsLearned+ $results[$i]->score;
+        }
+        
+        return view('users.Profile',compact('user','name','flag','wordsLearned','allActivities')); 
+    
+    }
+
     public function followUser(User $profileId)
     {
         $currentUser = Auth::user();
@@ -66,14 +94,22 @@ class UserController extends Controller
     public function makeLesson($categoryId)
     {
         $user = auth()->user();
-        $lesson =Lesson::create([
-            'category_id' => $categoryId,
-            'user_id' => $user->id,
-        ]);
+        $flag=Lesson::where('user_id','=',$user->id)->where('category_id','=',$categoryId)->first();
 
-        $lessonId=$lesson->id;
+        if($flag){
 
-        return redirect()->action('UserController@showQuiz',compact('categoryId','lessonId'));
+            return redirect()->action('UserController@showCategories');
+        }
+        else{
+            $lesson =Lesson::create([
+                'category_id' => $categoryId,
+                'user_id' => $user->id,
+            ]);
+    
+            $lessonId=$lesson->id;
+            
+            return redirect()->action('UserController@showQuiz',compact('categoryId','lessonId'));
+        }
     }
 
     public function showQuiz($categoryId,$lessonId)
@@ -113,6 +149,8 @@ class UserController extends Controller
         $lessonId = (int)$request->get('lessonId');
         $categoryId = (int)$request->get('categoryId');
 
+        $title = Category::find($categoryId )->title;
+
         $score=0;
         $userId = auth()->user()->id;
         $answers = Answer::where('lesson_id','=',$lessonId)->get();
@@ -141,6 +179,66 @@ class UserController extends Controller
             $choice = Choices::where('id','=',(int)$answer[$k]->choice_id)->first();
             $collection1->push($choice);
         }
-        return view('users.check',compact('score','question','answers','choices','collection','collection1','categoryId','lessonId'));
+        
+        return view('users.check',compact('title','score','question','answers','choices','collection','collection1','categoryId','lessonId'));
+    }
+
+    public function wordsLearned()
+    {
+        $userId = auth()->user()->id;
+        $name = auth()->user()->name;
+        $answers = User::find($userId)->answer()->get();
+
+        $wordsLearned = 0;
+        $currentUserId = auth()->user()->id;
+        $results= Result::where('user_id','=',$currentUserId)->get();
+        for($i=0;$i<$results->count();$i++){
+            $wordsLearned = $wordsLearned+ $results[$i]->score;
+        }
+
+        $answerCollection = collect();
+        for($i=0;$i<$answers->count();$i++){
+            $answerCollection->push($answers[$i]->choice_id);
+        }
+
+        $correctAnswers = collect();
+        $questionCollection = collect();
+        $answerCount=$answerCollection->count();
+
+        for($j=0;$j<$answerCount;$j++){
+            $choice = Choices::find($answerCollection[$j]);
+            if($choice->isCorrect==1){
+                $correctAnswers->push($choice->word);
+                $questionCollection->push($choice->question);
+            }
+        }
+        return view('users.DispWords',compact('name','correctAnswers','questionCollection','wordsLearned'));
+    }
+
+    public function viewProfile(User $userId)
+    {
+        
+        $allActivities = collect();
+        $userActivities = $userId->activity;
+
+        foreach($userActivities as $userActivity){
+ 
+            $allActivities->push($userActivity);
+        }
+
+        $user = $userId;
+
+        $name = $userId->name;
+        $id = auth()->user()->id;
+
+        $wordsLearned = 0;
+        $currentUserId = auth()->user()->id;
+        $results= Result::where('user_id','=',$currentUserId )->get();
+        for($i=0;$i<$results->count();$i++){
+            $wordsLearned = $wordsLearned+ $results[$i]->score;
+        }
+        $flag = Follower::where('follower_id','=',$currentUserId)->where('leader_id','=',$userId->id)->first();
+        
+        return view('users.Profile',compact('user','name','wordsLearned','flag','allActivities')); 
     }
 }
