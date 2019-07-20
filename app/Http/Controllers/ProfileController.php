@@ -6,7 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Traits\UploadTrait;
 use Intervention\Image\Facades\Image;
-
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -28,6 +28,8 @@ class ProfileController extends Controller
         // Form validation
         $request->validate([
             'name'              =>  'required',
+            'email'             => 'required',
+            'password'          => 'required',
             'profile_image'     =>  'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
@@ -36,6 +38,12 @@ class ProfileController extends Controller
         // Set user name
         $user->name = $request->input('name');
 
+        //Set email 
+        $user->email = $request->input('email');
+
+        //Set password 
+        
+        $user->password = Hash::make($request->input('password'));
         // Check if a profile image has been uploaded
         if ($request->has('profile_image')) {
             // Get image file

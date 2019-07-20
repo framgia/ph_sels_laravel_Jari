@@ -12,18 +12,25 @@
                 <img  src="{{asset(auth()->user()->profile_image) }}" class="rounded mx-auto d-block" id ="profilePic" width="40%" height="auto"/>
             </div>
             <div class='row justify-content-center mt-4 mx-auto'>
-                <div class="col-3 border-bottom border-dark">
-                <h3>{{ $name }}</h3>
+                <div class="col-4 border-bottom border-dark">
+                    <h3>{{ $name }}</h3>
+                    </br>
+                    <div class='row-4'>
+                        <h3>{{ $user->email }}</h3>
+                    </div>
                 </div>
+         
             </div>
 
             <div class='container'>
-                <div class='row justify-content-center mt-4 mx-auto'>
+                <div class='row justify-content-center mt-2 mx-auto'>
                     <div class= 'col justify-content-right mt-4'>
-                        <div class= "col col-md-offset-2  mx-auto">{{ $user->followers()->count() }}<br>Followers</div>
+                        <div class= "col col-md-offset-2  mx-auto">{{ $user->followers()->count() }}<br>
+                        <a  href="{{ URL::to('/user/follow/') }}">Followers</a></div>
                     </div>
                     <div class='col justify-content-center mt-4 '>
-                        <div class=' mx-auto'>{{ $user->followings()->count() }}<br>Followings</div>
+                        <div class=' mx-auto'>{{ $user->followings()->count() }}<br>
+                        <a  href="{{ URL::to('/user/following/') }}">Followings</a></div>
                     </div>
                 </div> 
             </div>   
@@ -31,7 +38,7 @@
             @if($user->name!=auth()->user()->name)
                 @if($flag)
                     <div class='row justify-content-center mt-4'>
-                        <button onclick="window.location='{{ url($user->id.'/unfollow') }}'">Unfollow User</a></button>
+                        <button class="btn btn-outline-primary" onclick="window.location='{{ url($user->id.'/unfollow') }}'">Unfollow User</a></button>
                     </div>
                 @else
                 <div class='row justify-content-center mt-4'>

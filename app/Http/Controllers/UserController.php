@@ -233,12 +233,26 @@ class UserController extends Controller
 
         $wordsLearned = 0;
         $currentUserId = auth()->user()->id;
-        $results= Result::where('user_id','=',$currentUserId )->get();
+        $results= Result::where('user_id','=',$user->id )->get();
         for($i=0;$i<$results->count();$i++){
             $wordsLearned = $wordsLearned+ $results[$i]->score;
         }
         $flag = Follower::where('follower_id','=',$currentUserId)->where('leader_id','=',$userId->id)->first();
         
         return view('users.Profile',compact('user','name','wordsLearned','flag','allActivities')); 
+    }
+
+    public function showFollow(){
+        $user = auth()->user();
+
+        $followers = $user->followers;
+        return view('users.followDisplay', compact('followers')); 
+    }
+
+    public function showFollowing(){
+        $user = auth()->user();
+
+        $followings = $user->followings;
+        return view('users.followingDisplay', compact('followings')); 
     }
 }

@@ -40,9 +40,17 @@
                                         <div class="form-group row">
                                             <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
                                             <div class="col-md-6">
-                                                <input id="email" type="text" class="form-control" name="email" value="{{ old('email', auth()->user()->email) }}" disabled>
+                                                <input id="email" type="text" class="form-control" name="email" value="{{ old('email', auth()->user()->email) }}" >
                                             </div>
                                         </div>
+
+                                        <div class="form-group row">
+                                            <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+                                            <div class="col-md-6">
+                                                <input id="password" type="text" class="form-control" name="password" value="{{ old('password', auth()->user()->password) }}" >
+                                            </div>
+                                        </div>
+
                                         <div class="form-group row">
                                             <label for="profile_image" class="col-md-4 col-form-label text-md-right">Profile Image</label>
                                             <div class="col-md-6">
