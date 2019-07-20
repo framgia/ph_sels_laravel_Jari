@@ -19,18 +19,17 @@
                         <h3>{{ $user->email }}</h3>
                     </div>
                 </div>
-         
             </div>
 
             <div class='container'>
                 <div class='row justify-content-center mt-2 mx-auto'>
                     <div class= 'col justify-content-right mt-4'>
                         <div class= "col col-md-offset-2  mx-auto">{{ $user->followers()->count() }}<br>
-                        <a  href="{{ URL::to('/user/follow/') }}">Followers</a></div>
+                        <a  href="{{ URL::to('/user/follow/' . $user->id) }}">Followers</a></div>
                     </div>
                     <div class='col justify-content-center mt-4 '>
                         <div class=' mx-auto'>{{ $user->followings()->count() }}<br>
-                        <a  href="{{ URL::to('/user/following/') }}">Followings</a></div>
+                        <a  href="{{ URL::to('/user/following/' . $user->id) }}">Followings</a></div>
                     </div>
                 </div> 
             </div>   

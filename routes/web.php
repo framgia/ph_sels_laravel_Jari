@@ -67,9 +67,11 @@ Route::prefix('category')->group(function () {
 Route::post('/results/store','ResultsController@storeResults');
 
 Route::prefix('user')->group(function () {
-    Route::get('following', 'UserController@showFollowing');
+    Route::get('results', 'UserController@showResults');
 
-    Route::get('follow', 'UserController@showFollow');
+    Route::get('following/{user}', 'UserController@showFollowing');
+
+    Route::get('follow/{user}', 'UserController@showFollow');
 
     Route::get('viewProfile/{userId}', 'UserController@viewProfile');
 

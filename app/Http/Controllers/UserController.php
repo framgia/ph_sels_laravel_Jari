@@ -97,8 +97,9 @@ class UserController extends Controller
         $flag=Lesson::where('user_id','=',$user->id)->where('category_id','=',$categoryId)->first();
 
         if($flag){
-
-            return redirect()->action('UserController@showCategories');
+                    
+            $lessonId = $flag->id;
+            return redirect()->action('UserController@showResults',compact('lessonId','categoryId'));
         }
         else{
             $lesson =Lesson::create([
@@ -112,15 +113,56 @@ class UserController extends Controller
         }
     }
 
+    public function showResults(Request $request)
+    {
+        $lessonId = (int)$request->get('lessonId');
+        $categoryId = (int)$request->get('categoryId');
+
+        $title = Category::find($categoryId )->title;
+
+        $score=0;
+        $userId = auth()->user()->id;
+        $answers = Answer::where('lesson_id','=',$lessonId)->get();
+     
+        $question = Question::where('category_id','=',$categoryId)->get();
+
+        $choices = Choices::where('question_id','=',(int)$request->get('id'));
+
+        for($i=0;$i<$question->count();$i++){
+            $choiceId= $answers[$i]->choice_id;
+            $isCorrect = Choices::find($choiceId)->isCorrect;
+            if($isCorrect==1){
+                $score=$score+1;
+            }
+        }
+        
+        $collection = collect();
+
+        for($j=0;$j<$question->count();$j++){
+            $collection->push($question[$j]->term);
+        }
+        
+        $collection1 = collect();
+        $answer= Answer::where('lesson_id','=',$lessonId)->get();
+        for($k=0;$k<$question->count();$k++){
+            $choice = Choices::where('id','=',(int)$answer[$k]->choice_id)->first();
+            $collection1->push($choice);
+        }
+        
+        return view('users.Results',compact('title','score','question','answers','choices','collection','collection1','categoryId','lessonId'));
+    }
+
     public function showQuiz($categoryId,$lessonId)
     {
         $currentUserId = auth()->user()->id;
 
         $categoryId=(int)$categoryId;
 
+        $questionCount = Question::where('category_id', $categoryId)->count();
         $questions = Question::where('category_id', $categoryId)->paginate(1);
         $currentPage = $questions->currentPage();
-        return view('users.Quiz',compact('questions','categoryId','lessonId','currentPage'));
+        
+        return view('users.Quiz',compact('questions','categoryId','lessonId','currentPage','questionCount'));
     }
 
     public function store(Request $request)
@@ -242,16 +284,16 @@ class UserController extends Controller
         return view('users.Profile',compact('user','name','wordsLearned','flag','allActivities')); 
     }
 
-    public function showFollow(){
-        $user = auth()->user();
-
+    public function showFollow(User $user){
+        // $user = auth()->user();
+        // return $user;
         $followers = $user->followers;
         return view('users.followDisplay', compact('followers')); 
     }
 
-    public function showFollowing(){
-        $user = auth()->user();
-
+    public function showFollowing(User $user){
+        // $user = auth()->user();
+        // return $user;
         $followings = $user->followings;
         return view('users.followingDisplay', compact('followings')); 
     }
