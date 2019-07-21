@@ -94,4 +94,17 @@ Route::prefix('user')->group(function () {
     Route::get('{userId}', 'UserController@displayProfile');
 });
 
+Route::prefix('client')->group(function () {
+    Route::get('create', 'AdminController@create');
+
+    Route::patch('{client}', 'AdminController@edit');
+
+    Route::get('edit', 'AdminController@change');
+
+    Route::delete('/destroy/{client}', 'AdminController@destroy');
+
+    Route::post('store', 'AdminController@store');
+});
+
+
 Route::get('/makeLesson/{categoryid}', 'UserController@makeLesson');
