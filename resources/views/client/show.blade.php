@@ -14,8 +14,7 @@
                 <button type="submit" onclick=window.location='{{ url("/client/create") }}' class="button is-link btn btn-success">Create Client</button>
             </div>
         </div>   
-    </div> 
-            
+    </div>           
     <br/>
     <div class='row border-top  border-bottom mb-4 p-1  '>
         <div class='col-sm-2'>

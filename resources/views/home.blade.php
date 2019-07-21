@@ -22,6 +22,7 @@
                 @if(auth()->user()->isAdmin == 1)
                     <div>{{auth()->user()->name}}</div>
                     <div class='panel-body'>
+                        <a href="{{url('question/edit')}}">Show Questions</a><br>
                         <a href="{{url('client/edit')}}">Show Clients</a><br>
                         <a href="{{url('category/edit')}}">Show Categories</a><br>
                         <a href="{{url('question/addQuestion')}}">Add Question</a><br>

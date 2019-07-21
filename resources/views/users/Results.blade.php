@@ -16,7 +16,7 @@
     <div class="container">
         <div class='row'>
             <div class="col">
-                <h2>{{ $title }} was already completed by you.</h2>
+                <h2>{{ $title }} was already completed.</h2>
             </div>
             <div class="col"><h2>Result: {{ $score }} of {{ $question->count() }} </h2></div>
         </div>

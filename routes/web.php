@@ -106,5 +106,17 @@ Route::prefix('client')->group(function () {
     Route::post('store', 'AdminController@store');
 });
 
+Route::prefix('question')->group(function () {
+    Route::get('edit', 'QuestionController@change');
+
+    Route::delete('/destroy/{question}', 'QuestionController@destroy');
+
+    Route::get('create', 'QuestionController@create');
+
+    Route::patch('{question}', 'QuestionController@edit');
+
+    Route::post('store', 'QuestionController@store');
+});
+
 
 Route::get('/makeLesson/{categoryid}', 'UserController@makeLesson');
