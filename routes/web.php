@@ -118,5 +118,17 @@ Route::prefix('question')->group(function () {
     Route::post('store', 'QuestionController@store');
 });
 
+Route::prefix('choice')->group(function () {
+    Route::get('edit', 'ChoicesController@change');
+
+    Route::delete('/destroy/{choice}', 'ChoicesController@destroy');
+
+    Route::get('create', 'ChoicesController@create');
+
+    Route::patch('{choice}', 'ChoicesController@edit');
+
+    Route::post('store', 'ChoicesController@store');
+});
+
 
 Route::get('/makeLesson/{categoryid}', 'UserController@makeLesson');

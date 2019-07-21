@@ -10,7 +10,7 @@
         <div class='col-md-8 col-md-offset-2'>
             <div class='panel panel-default'>
                 <div class='panel-heading'>{{ auth()->user()->name }}</div>
-                <h1>Questions</h1>
+                <h1>Choices</h1>
                 <button type="submit" onclick=window.location='{{ url("/question/create") }}' class="button is-link btn btn-success">Create Question</button>
             </div>
         </div>   
@@ -29,10 +29,10 @@
     </div>
 </div>
 
-@foreach ($questions as $question)
+@foreach ($choices as $choice)
 <div class='container mb-3'>
     
-        <form class = "form-horizontal" method="POST" action= "/question/{{$question->id}}">
+        <form class = "form-horizontal" method="POST" action= "/choice/{{$question->id}}">
             @method('PATCH')
             @csrf
             <div class='row'>
@@ -41,7 +41,6 @@
                 </div>
 
                 <div class = 'col-sm-2'>
-
                     <select id="categoryId" name="categoryId" placeholder="Category Name" required >
                         @foreach($categories as $category)
                             <option value="{{$category->id}}">{{$category->title}}</option>
@@ -59,7 +58,7 @@
             </div>
         </form>
         
-        <form class = "form-horizontal" method="POST" action= "/question/destroy/{{$question->id}}">
+        <form class = "form-horizontal" method="POST" action= "/choice/destroy/{{$question->id}}">
             @method('DELETE')
             @csrf
                 <div class="col-sm-2">
