@@ -28,7 +28,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('users.DispUsers',compact('users'));
+        return view('users.dispUsers',compact('users'));
     }
 
     public function show(User $userId)
@@ -39,14 +39,16 @@ class UserController extends Controller
 
     public function displayProfile(User $userId)
     {
-        return view('users.DispProf',compact('userId')); 
+        return view('users.dispProf',compact('userId')); 
     }
 
     public function followUser(User $profileId)
     {
         $currentUser = Auth::user();
-
         $profileId->followers()->attach($currentUser->id);
+
+        (new Activity)->createActivityFollower();
+  
         return redirect()->back()->with('success', 'Successfully followed the user.');
     }
 
@@ -60,7 +62,7 @@ class UserController extends Controller
     {
         $categories = Category::all();
 
-        return view('users.Lesson',compact('categories'));
+        return view('users.lesson',compact('categories'));
     }
 
     public function makeLesson($categoryId)
@@ -84,7 +86,7 @@ class UserController extends Controller
 
         $questions = Question::where('category_id', $categoryId)->paginate(1);
         $currentPage = $questions->currentPage();
-        return view('users.Quiz',compact('questions','categoryId','lessonId','currentPage'));
+        return view('users.quiz',compact('questions','categoryId','lessonId','currentPage'));
     }
 
     public function store(Request $request)
@@ -116,31 +118,48 @@ class UserController extends Controller
         $score=0;
         $userId = auth()->user()->id;
         $answers = Answer::where('lesson_id','=',$lessonId)->get();
-     
-        $question = Question::where('category_id','=',$categoryId)->get();
+
+        $questions = Question::where('category_id','=',$categoryId)->get();
 
         $choices = Choices::where('question_id','=',(int)$request->get('id'));
 
-        for($i=0;$i<$question->count();$i++){
+        for($i=0;$i<$questions->count();$i++){
             $choiceId= $answers[$i]->choice_id;
             $isCorrect = Choices::find($choiceId)->isCorrect;
             if($isCorrect==1){
                 $score=$score+1;
             }
         }
-        
-        $collection = collect();
 
-        for($j=0;$j<$question->count();$j++){
-            $collection->push($question[$j]->term);
-        }
+        $collection = (new Question)->getQuestions($categoryId);
+
+        $collection1 = (new Answer)->getAnswers($lessonId);
         
-        $collection1 = collect();
-        $answer= Answer::where('lesson_id','=',$lessonId)->get();
-        for($k=0;$k<$question->count();$k++){
-            $choice = Choices::where('id','=',(int)$answer[$k]->choice_id)->first();
-            $collection1->push($choice);
+        return view('users.check',compact('score','questions','answers','choices','collection','collection1','categoryId','lessonId'));
+    }
+
+    public function wordsLearned()
+    {
+        $userId = auth()->user()->id;
+        $name = auth()->user()->name;
+        $answers = User::find($userId)->answer()->get();
+
+        $wordsLearned = 0;
+        $currentUserId = auth()->user()->id;
+        $results= Result::where('user_id','=',$currentUserId)->get();
+
+        for($i=0;$i<$results->count();$i++){
+            $wordsLearned = $wordsLearned+ $results[$i]->score;
         }
-        return view('users.check',compact('score','question','answers','choices','collection','collection1','categoryId','lessonId'));
+
+        $answerObject = new Answer;
+
+        $answerCollection = $answerObject->getAnswerId($answers);
+
+        $correctAnswers = $answerObject->getCorrectAnswers($answerCollection);
+
+        $questionCollection =  $answerObject->getQuestions($answerCollection);
+        
+        return view('users.dispWords',compact('name','correctAnswers','questionCollection','wordsLearned'));
     }
 }

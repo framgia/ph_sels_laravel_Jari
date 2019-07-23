@@ -3,7 +3,7 @@
 <div class='container'>
     @if(\Session::has('error'))
     <div class='alert alert-danger'>
-        {{\Session::get('error')}}
+        {{ \Session::get('error') }}
     </div>
     @endif
     <div class='row'>
@@ -11,7 +11,7 @@
             <div class='panel panel-default'>
                 <div class='panel-heading'>Dashboard</div>
                 @foreach ($users as $user)
-                    <a href="{{ URL::to('/user/' . $user->id) }}"> {{$user->name}}</a><br>
+                    <a href="{{ URL::to('/user/' . $user->id) }}"> {{ $user->name }}</a><br>
                 @endforeach
             </div>
         </div>

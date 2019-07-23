@@ -7,7 +7,7 @@
 <div class='container'>
     @if(\Session::has('error'))
     <div class='alert alert-danger'>
-        {{\Session::get('error')}}
+        {{ \Session::get('error') }}
     </div>
     @endif
     <div class='row'>
@@ -31,7 +31,6 @@
                                 </div>
                             </div>
                         </form>
-
                     @endforeach
                 </div>
             </div>

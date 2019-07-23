@@ -3,7 +3,7 @@
 <div class='container'>
     @if(\Session::has('error'))
     <div class='alert alert-danger'>
-        {{\Session::get('error')}}
+        {{ \Session::get('error') }}
     </div>
     @endif
     <div class='row'>
@@ -14,8 +14,8 @@
                     <a href="{{ URL::to('/profile/'.$userId->id.'/follow') }}"> Follow User</a><br>
                     <a href="{{ URL::to($userId->id.'/unfollow') }}"> Unfollow User</a><br>
 
-                    <div>Followers</div>{{$userId->followers()->count()}}
-                    <div>Following</div>{{$userId->followings()->count()}}
+                    <div>Followers</div>{{ $userId->followers()->count() }}
+                    <div>Following</div>{{ $userId->followings()->count() }}
             </div>
         </div>
     </div>

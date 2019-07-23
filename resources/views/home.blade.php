@@ -3,7 +3,7 @@
 <div class='container'>
     @if(\Session::has('error'))
     <div class='alert alert-danger'>
-        {{\Session::get('error')}}
+        {{ \Session::get('error') }}
     </div>
     @endif
     <div class='row'>
@@ -18,6 +18,7 @@
                 @else                
                     <div class='panel-body'>
                         <a href="{{url('user/displayList')}}">Users</a><br>
+                        <a href="{{url('user/wordsLearned')}}">Words Learned</a><br>
                         <a href="{{url('user/lessons')}}">Lessons</a><br>
                     </div>
                 @endif

@@ -24,4 +24,15 @@ class Question extends Model
     {
         return $this->hasMany('App\Answer');
     }
+
+    public function getQuestions($categoryId)
+    {
+        $questions = Question::where('category_id','=',$categoryId)->get();
+
+        $collection = $questions->map(function ($item,$key){
+            return $item->term;
+        });
+
+        return $collection;
+    }
 }
