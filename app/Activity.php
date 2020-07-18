@@ -12,7 +12,6 @@ class Activity extends Model
 
     public function user()
     {
-
         return $this->belongsTo('App\User');
     }
 
@@ -22,8 +21,7 @@ class Activity extends Model
             'action_id'=> $data['action_id'],
             'action_type'=>"App\Lesson",
             'user_id'=> $data['user_id'],
-            'content'=> ' learned ' . $data['score'] . ' out of ' . $data['questionCount'] . ' from ' .  $data['title'] ,
+            'content'=> ' learned ' . $data['score'] . ' out of ' . $data['questionCount'] . ' words from ' .  $data['title'] ,
         ]);
-        
     }
 }

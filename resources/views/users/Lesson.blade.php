@@ -26,7 +26,7 @@
                             
                                 <div class="field">
                                     <div class="control">
-                                        <button type="submit" >Start</button>
+                                        <button type="submit" class="btn btn-primary">Start</button>
                                     </div>
                                 </div>
                             </div>
