@@ -17,7 +17,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('admin/routes', 'HomeController@admin')->middleware('admin');
 
 Route::get('/admin/register', 'HomeController@adminRegister');
@@ -26,6 +28,16 @@ Route::resource('projects', 'ProjectsController');
 
 Route::patch('/tasks/{task}', 'ProjectTasksController@update');
 
+Route::prefix('profile')->group(function () {
+    Route::get('', 'ProfileController@index')->name('profile');
+
+    Route::post('/update', 'ProfileController@updateProfile')->name('profile.update');
+    
+    Route::get('/{profileId}/follow', 'UserController@followUser')->name('user.follow');
+    
+});
+
+Route::get('/{profileId}/unfollow', 'UserController@unFollowUser')->name('user.unfollow');
 
 Route::prefix('category')->group(function () {
 
@@ -45,6 +57,12 @@ Route::prefix('category')->group(function () {
 Route::post('/results/store','ResultsController@storeResults');
 
 Route::prefix('user')->group(function () {
+    Route::get('viewProfile/{userId}', 'UserController@viewProfile');
+
+    Route::get('userProfile', 'UserController@userProfile');
+
+    Route::get('wordsLearned', 'UserController@wordsLearned');
+
     Route::get('check/', 'UserController@check')->name('quiz.check');
 
     Route::get('quiz/{categoryId}/{lessonId}', 'UserController@showQuiz');
@@ -55,12 +73,13 @@ Route::prefix('user')->group(function () {
 
     Route::get('lessons', 'UserController@showCategories');
 
+    Route::get('lessons', 'UserController@showCategories');
+
+    Route::get('lessons', 'UserController@showCategories');
+
     Route::get('displayList', 'UserController@displayList');
 
     Route::get('{userId}', 'UserController@displayProfile');
 });
 
 Route::get('/makeLesson/{categoryid}', 'UserController@makeLesson');
-
-Route::get('/profile/{profileId}/follow', 'UserController@followUser')->name('user.follow');
-Route::get('/{profileId}/unfollow', 'UserController@unFollowUser')->name('user.unfollow');

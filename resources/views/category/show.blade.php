@@ -15,7 +15,6 @@
 
 
         <form method="POST" action= "/category/{{$category->id}}">
-
             @method('PATCH')
             @csrf
 
@@ -38,7 +37,7 @@
 
             <div class="field">
                 <div class="control">
-                    <button type="submit" class="button is-link">Update Category</button>
+                    <button type="submit" class="button is-link btn btn-primary">Update Category</button>
                 </div>
             </div>
         </form>
